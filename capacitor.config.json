@@ -1,0 +1,11 @@
+{
+  "appId": "com.example.app",
+  "appName": "workout orginiser",
+  "bundledWebRuntime": false,
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
