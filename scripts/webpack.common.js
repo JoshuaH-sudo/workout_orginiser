@@ -3,7 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "../src/index.tsx"),
-  mode: 'development',
+  mode: "development",
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -30,6 +31,9 @@ module.exports = {
   ],
   resolve: {
     extensions: [".tsx", ".jsx", ".ts", ".js"],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   output: {
     filename: "[name].js",

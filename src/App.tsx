@@ -1,8 +1,8 @@
 import { FC } from "react";
 import "@elastic/eui/dist/eui_theme_dark.css";
 
-import { EuiPageTemplate, EuiProvider, EuiText } from "@elastic/eui";
-import Workout_list from "./component/Workout_list";
+import { EuiPageTemplate, EuiProvider } from "@elastic/eui";
+import App_route from "./component/App_Route";
 
 const App: FC = () => {
   return (
@@ -13,7 +13,7 @@ const App: FC = () => {
           color="subdued"
           bottomBorder="extended"
         >
-          <Workout_list />
+        <App_route /> 
         </EuiPageTemplate.Section>
       </EuiPageTemplate>
     </EuiProvider>

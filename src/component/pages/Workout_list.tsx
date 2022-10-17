@@ -1,30 +1,15 @@
 import { EuiFlexItem, EuiCard, EuiIcon, EuiFlexGroup } from "@elastic/eui";
 import { FC } from "react";
-
-type Workout = {
-  id: string;
-  name: string;
-};
+import { Workout, workouts } from "../store/workouts";
 
 const Workout_list: FC = () => {
-  const workouts: Workout[] = [
-    {
-      id: "1",
-      name: "Workout 1",
-    },
-    {
-      id: "2",
-      name: "Workout 2",
-    },
-  ];
-
   const workout_display_list = workouts.map((workout) => (
     <EuiFlexItem key={workout.id}>
       <Workout_item {...workout} />
     </EuiFlexItem>
   ));
 
-  workout_display_list.push(<Add_workout/>)
+  workout_display_list.push(<Add_workout />);
 
   return <EuiFlexGroup gutterSize="l">{workout_display_list}</EuiFlexGroup>;
 };
@@ -44,6 +29,7 @@ const Workout_item: FC<Workout> = ({ id, name }) => {
     <EuiCard
       title={`${name}`}
       description="Example of a card's description. Stick to one or two sentences."
+      href={`item/${id}`}
       onClick={() => {}}
     />
   );
