@@ -2,22 +2,18 @@ import { FC } from "react";
 import "@elastic/eui/dist/eui_theme_dark.css";
 
 import { EuiPageTemplate, EuiProvider, EuiText } from "@elastic/eui";
+import Workout_list from "./component/Workout_list";
 
 const App: FC = () => {
   return (
     <EuiProvider colorMode="dark">
       <EuiPageTemplate>
         <EuiPageTemplate.Section
-          grow={false}
+          grow={true}
           color="subdued"
           bottomBorder="extended"
         >
-          <EuiText textAlign="center">
-            <strong>
-              Stack EuiPageTemplate sections and headers to create your custom
-              content order.
-            </strong>
-          </EuiText>
+          <Workout_list />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>
     </EuiProvider>
