@@ -30,7 +30,6 @@ const Workout_item: FC<Workout> = ({ id, name }) => {
       title={`${name}`}
       description="Example of a card's description. Stick to one or two sentences."
       href={`item/${id}`}
-      onClick={() => {}}
     />
   );
 };
