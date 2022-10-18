@@ -19,7 +19,6 @@ const Add_workout: FC = () => {
     <EuiCard
       title=""
       icon={<EuiIcon size="xxl" type="plus" />}
-      onClick={() => {}}
     />
   );
 };
