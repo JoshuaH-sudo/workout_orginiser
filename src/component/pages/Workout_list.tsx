@@ -1,6 +1,7 @@
 import { EuiFlexItem, EuiCard, EuiIcon, EuiFlexGroup } from "@elastic/eui";
 import { FC } from "react";
 import { Workout, workouts } from "../store/workouts";
+import { v4} from "uuid"
 
 const Workout_list: FC = () => {
   const workout_display_list = workouts.map((workout) => (
@@ -19,6 +20,7 @@ const Add_workout: FC = () => {
     <EuiCard
       title=""
       icon={<EuiIcon size="xxl" type="plus" />}
+      href={`item/${v4()}`}
     />
   );
 };

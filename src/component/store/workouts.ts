@@ -1,4 +1,5 @@
 export type Exercise = {
+  id: string;
   name: string;
 };
 
@@ -12,11 +13,11 @@ export const workouts: Workout[] = [
   {
     id: "0",
     name: "Workout 0",
-    exercises: [{ name: "pushups" }, { name: "chest fly" }],
+    exercises: [{id: '0', name: "pushups" }, { id: '1', name: "chest fly" }],
   },
   {
     id: "1",
     name: "Workout 1",
-    exercises: [{ name: "sit-ups" }],
+    exercises: [{ id: '0', name: "sit-ups" }],
   },
 ];
