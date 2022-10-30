@@ -20,7 +20,7 @@ const Add_workout: FC = () => {
     <EuiCard
       title=""
       icon={<EuiIcon size="xxl" type="plus" />}
-      href={`item/${v4()}`}
+      href={`workout/${v4()}`}
     />
   );
 };
@@ -30,7 +30,7 @@ const Workout_item: FC<Workout> = ({ id, name }) => {
     <EuiCard
       title={`${name}`}
       description="Example of a card's description. Stick to one or two sentences."
-      href={`item/${id}`}
+      href={`workout/${id}`}
     />
   );
 };
