@@ -1,12 +1,8 @@
-import {
-    EuiListGroup,
-    EuiListGroupItem,
-    EuiPageSection,
-} from "@elastic/eui";
-import {FC} from "react";
-import {useLoaderData, LoaderFunctionArgs} from "react-router-dom";
-import {v4} from "uuid";
-import {Exercise, Workout, workouts} from "../store/workouts";
+import { EuiListGroup, EuiListGroupItem, EuiPageSection } from "@elastic/eui";
+import { FC } from "react";
+import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
+import { v4 } from "uuid";
+import { Workout_store, Exercise, Workout } from "../store/workouts";
 
 const Workout_item: FC = () => {
     const current_workout = useLoaderData() as Workout;
@@ -28,30 +24,24 @@ interface Exercise_list_props {
     exercises: Exercise[];
 }
 
-const Exercise_list: FC<Exercise_list_props> = ({workout_id, exercises}) => {
-    const get_url = (id: string) => `/workout/${workout_id}/exercise/${id}`
+const Exercise_list: FC<Exercise_list_props> = ({ workout_id, exercises }) => {
+    const get_url = (id: string) => `/workout/${workout_id}/exercise/${id}`;
     return (
         <EuiListGroup flush={true} bordered={true}>
             {exercises.map((exercise) => (
                 <EuiListGroupItem label={exercise.name} href={get_url(exercise.id)} />
             ))}
 
-            <EuiListGroupItem label={'Add exercise'} href={get_url(v4())} />
+            <EuiListGroupItem label={"Add exercise"} href={get_url(v4())} />
         </EuiListGroup>
     );
 };
-//retirves the workout from the database
-export const get_workout = (workout_id: string) => {
-    const current_workout_index = workouts.findIndex(
-        (workout) => workout.id === workout_id
-    );
-    const current_workout = workouts[current_workout_index];
-    return current_workout;
-}
+
 //gets the workout id form params
-export const workout_loader = ({params}: LoaderFunctionArgs): Workout => {
-    const workout_id = params.workout_id as string
-    return get_workout(workout_id)
+export const workout_loader = ({ params }: LoaderFunctionArgs): Workout => {
+    const workout_id = params.workout_id as string;
+    const Workouts = Workout_store.getInstance();
+    return Workouts.get_workout(workout_id);
 };
 
 export default Workout_item;
