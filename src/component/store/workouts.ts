@@ -15,8 +15,9 @@ import { v4 } from "uuid";
             exercises: [{ id: "0", name: "sit-ups" }],
         },
 */
-export class Workout_store {
-    private static instance: Workout_store;
+
+export class Workout_store_handler {
+    private static instance: Workout_store_handler;
     /**
      * The Singleton's constructor should always be private to prevent direct
      * construction calls with the `new` operator.
@@ -29,12 +30,12 @@ export class Workout_store {
      * This implementation let you subclass the Singleton class while keeping
      * just one instance of each subclass around.
      */
-    public static getInstance(): Workout_store {
-        if (!Workout_store.instance) {
-            Workout_store.instance = new Workout_store();
+    public static getInstance(): Workout_store_handler {
+        if (!Workout_store_handler.instance) {
+            Workout_store_handler.instance = new Workout_store_handler();
         }
 
-        return Workout_store.instance;
+        return Workout_store_handler.instance;
     }
 
     workouts: Workout[] = [

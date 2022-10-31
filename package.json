@@ -23,6 +23,7 @@
     "@elastic/eui": "^69.0.0",
     "@emotion/cache": "^11.10.3",
     "@emotion/react": "^11.10.4",
+    "@reduxjs/toolkit": "^1.8.6",
     "joi": "^17.6.4",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
