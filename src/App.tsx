@@ -18,12 +18,7 @@ const App: FC = () => {
   return (
     <EuiProvider colorMode="dark">
       <EuiPageTemplate>
-        <EuiPageTemplate.Section
-          grow={true}
-          color="subdued"
-          bottomBorder="extended"
-          css={extend}
-        >
+        <EuiPageTemplate.Section grow={true} color="subdued" bottomBorder="extended" css={extend}>
           <EuiPanel grow={true}>
             <App_route />
           </EuiPanel>

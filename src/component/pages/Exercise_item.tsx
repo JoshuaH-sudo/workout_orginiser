@@ -2,14 +2,15 @@ import { EuiFormRow, EuiFieldText, EuiForm, EuiButton } from "@elastic/eui";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { Exercise, Workout_store } from "../store/workouts";
+import useWorkouts from "../../hooks/useWorkouts";
+import {Exercise} from "../store/slices/databaseSlice";
 
 interface Exercise_item_props {}
 
 //will only see this if user is editing or crating a item
 const Exercise_item: FC<Exercise_item_props> = ({}) => {
     const current_exercise = useLoaderData() as Exercise;
-    const new_mode = current_exercise === null;
+    const new_mode = current_exercise === undefined;
 
     let defualt_value = undefined;
     if (!new_mode) {
@@ -43,15 +44,13 @@ const Exercise_item: FC<Exercise_item_props> = ({}) => {
     );
 };
 
-export const excercise_loader = ({ params }: LoaderFunctionArgs): Exercise => {
+export const excercise_loader = ({ params }: LoaderFunctionArgs) => {
+    const {workout_store_handler} = useWorkouts();
+
     const workout_id = params.workout_id as string;
-    const Workouts = Workout_store.getInstance();
-    const current_workout = Workouts.get_workout(workout_id);
+    const current_workout = workout_store_handler.get_workout(workout_id);
 
-    const excercise_id = params.exercise_id;
-    const current_exercise_index = current_workout.exercises.findIndex((exercise) => exercise.id === excercise_id);
-    const current_exercise = current_workout.exercises[current_exercise_index] ?? null;
-
-    return current_exercise;
+    const exercise_id = params.exercise_id as string;
+    return current_workout.get_exercise(exercise_id);
 };
 export default Exercise_item;

@@ -1,11 +1,15 @@
-import {configureStore} from "@reduxjs/toolkit"
-import databaseSlice from "./slices/databaseSlice"
+import { configureStore } from "@reduxjs/toolkit";
+import databaseSlice from "./slices/databaseSlice";
 
 const store = configureStore({
-  database: databaseSlice
-})
+  reducer: {
+    database: databaseSlice,
+  },
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
+
+export default store
