@@ -1,10 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
-export type Exercise = {
+export class Exercise {
   id: string;
   name: string;
-};
+
+  constructor(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public get_info() {
+    return {
+      id: this.id,
+      name: this.name,
+    };
+  }
+  public edit(name: string) {
+    this.name = name;
+  }
+}
 
 export class Workout {
   id: string;
@@ -31,10 +46,9 @@ interface Database_state {
   workouts: Workout[];
 }
 
-
 /**
-  * A temporary function to retrive a temp database for testing
-  */
+ * A temporary function to retrive a temp database for testing
+ */
 const get_store_data = (): Database_state => {
   let retrived_database: Database_state;
 
@@ -45,12 +59,8 @@ const get_store_data = (): Database_state => {
     retrived_database = {
       user_data: "yeet",
       workouts: [
-        new Workout("0", "Gym", [
-          { id: "0", name: "pushups" },
-          { id: "1", name: "chest fly" },
-        ]),
-        new Workout("1", "Home", [{ id: "0", name: "sit ups" }]),
-      ],
+        new Workout("0", "Gym", [new Exercise("0", "pushups"), new Exercise("1", "chest fly")]), 
+        new Workout("1", "Home", [new Exercise("0", "sit ups")])],
     };
 
     //save the new test database
@@ -74,8 +84,7 @@ export const databaseSlice = createSlice({
     set_data_in_store: (state, action: PayloadAction<Set_data_action>) => {
       state = { ...state, ...action.payload };
     },
-    get_data: (state) => {
-      state = get_store_data();
+    get_data: (state, action: PayloadAction<Workout>) => {
     },
   },
 });

@@ -1,5 +1,5 @@
 import { EuiFormRow, EuiFieldText, EuiForm, EuiButton, EuiText } from "@elastic/eui";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import useWorkouts from "../../hooks/useWorkouts";
@@ -18,65 +18,58 @@ const Exercise_item: FC<Exercise_item_props> = ({}) => {
   const workout = workout_store_handler.get_workout(workout_id);
   const exercise = workout.get_exercise(exercise_id);
 
-  if (exercise == undefined) return <Exercise_form mode="create" workout={workout} />;
+  const [edit_mode, set_edit_mode] = useState(false);
+  const complete_form = () => set_edit_mode(false);
+
+  //create new exercise
+  if (exercise == undefined) return <Exercise_form workout={workout} />;
+  //edit existing exercise
+  if (edit_mode) return <Exercise_form exercise={exercise} workout={workout} complete_form={complete_form} />;
+  //display current exercise
   return (
     <EuiForm>
-      <Display_exercise exercise={exercise} />
-    </EuiForm>
-  );
-};
-
-interface Display_exercise_props {
-  exercise: Exercise;
-}
-
-const Display_exercise: FC<Display_exercise_props> = ({ exercise }) => {
-  return (
-    <>
       <EuiFormRow>
         <EuiText>{exercise.name}</EuiText>
       </EuiFormRow>
 
       <EuiFormRow>
-        <EuiButton>Edit</EuiButton>
+        <EuiButton onClick={() => set_edit_mode(true)}>Edit</EuiButton>
       </EuiFormRow>
-    </>
+    </EuiForm>
   );
 };
 
 /**
- *conditonal prop types based on which mode is used
+ * conditonal prop types based on which mode is used
  */
 type Exercise_form_props =
   | {
-      mode: "edit";
       exercise: Exercise;
       workout: Workout;
+      complete_form: () => void;
     }
   | {
-      mode: "create";
       exercise?: never;
       workout: Workout;
+      complete_form?: never;
     };
 
 /**
  * Display the create/edit form for exercise
+ * @param exercise - if this is not undefined than the form will be in edit mode
  */
-const Exercise_form: FC<Exercise_form_props> = ({ mode, workout, exercise }) => {
-  let defualt_value = undefined;
-  if (mode === "edit") {
-    defualt_value = { ...exercise };
-  }
+const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
+  let defualt_value = exercise;
 
   const {
     handleSubmit,
-    watch,
     control,
     formState: { errors },
   } = useForm({ defaultValues: defualt_value });
-  const onSubmit = (data: any) => console.log(data);
 
-  console.log(watch("name")); // watch input value by passing the name of it
+  const onSubmit = (data: Exercise): void => {
+    exercise!.edit(data.name);
+  };
 
   return (
     <EuiForm onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +82,7 @@ const Exercise_form: FC<Exercise_form_props> = ({ mode, workout, exercise }) => 
         control={control}
         name="name"
       />
-      <EuiButton>{mode == "create" ? "Create" : "Edit"}</EuiButton>
+      <EuiButton>{exercise != undefined ? "Edit" : "Create"}</EuiButton>
     </EuiForm>
   );
 };
