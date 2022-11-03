@@ -1,56 +1,104 @@
-import { EuiFormRow, EuiFieldText, EuiForm, EuiButton } from "@elastic/eui";
+import { EuiFormRow, EuiFieldText, EuiForm, EuiButton, EuiText } from "@elastic/eui";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import useWorkouts from "../../hooks/useWorkouts";
-import {Exercise} from "../store/slices/databaseSlice";
+import { Exercise, Workout } from "../store/slices/databaseSlice";
+import { Workout_loader_data } from "./Workout_item";
 
 interface Exercise_item_props {}
 
-//will only see this if user is editing or crating a item
+/**
+ *Displays the exercise item's value to edit or create new ones
+ */
 const Exercise_item: FC<Exercise_item_props> = ({}) => {
-    const current_exercise = useLoaderData() as Exercise;
-    const new_mode = current_exercise === undefined;
+  const { workout_id, exercise_id } = useLoaderData() as Exercise_loader_data;
+  const { workout_store_handler } = useWorkouts();
 
-    let defualt_value = undefined;
-    if (!new_mode) {
-        defualt_value = { ...current_exercise };
-    }
+  const workout = workout_store_handler.get_workout(workout_id);
+  const exercise = workout.get_exercise(exercise_id);
 
-    //if current_exercise is null make new exercise
-    const {
-        handleSubmit,
-        watch,
-        control,
-        formState: { errors },
-    } = useForm({ defaultValues: defualt_value });
-    const onSubmit = (data: any) => console.log(data);
-
-    console.log(watch("name")); // watch input value by passing the name of it
-
-    return (
-        <EuiForm onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-                render={({ field }) => (
-                    <EuiFormRow label="Name" error={errors.name?.message}>
-                        <EuiFieldText disabled={!new_mode} {...field} />
-                    </EuiFormRow>
-                )}
-                control={control}
-                name="name"
-            />
-            <EuiButton>{new_mode ? 'Create' : 'Edit' }</EuiButton>
-        </EuiForm>
-    );
+  if (exercise == undefined) return <Exercise_form mode="create" workout={workout} />;
+  return (
+    <EuiForm>
+      <Display_exercise exercise={exercise} />
+    </EuiForm>
+  );
 };
 
-export const excercise_loader = ({ params }: LoaderFunctionArgs) => {
-    const {workout_store_handler} = useWorkouts();
+interface Display_exercise_props {
+  exercise: Exercise;
+}
 
-    const workout_id = params.workout_id as string;
-    const current_workout = workout_store_handler.get_workout(workout_id);
+const Display_exercise: FC<Display_exercise_props> = ({ exercise }) => {
+  return (
+    <>
+      <EuiFormRow>
+        <EuiText>{exercise.name}</EuiText>
+      </EuiFormRow>
 
-    const exercise_id = params.exercise_id as string;
-    return current_workout.get_exercise(exercise_id);
+      <EuiFormRow>
+        <EuiButton>Edit</EuiButton>
+      </EuiFormRow>
+    </>
+  );
+};
+
+/**
+ *conditonal prop types based on which mode is used
+ */
+type Exercise_form_props =
+  | {
+      mode: "edit";
+      exercise: Exercise;
+      workout: Workout;
+    }
+  | {
+      mode: "create";
+      exercise?: never;
+      workout: Workout;
+    };
+
+/**
+ * Display the create/edit form for exercise
+ */
+const Exercise_form: FC<Exercise_form_props> = ({ mode, workout, exercise }) => {
+  let defualt_value = undefined;
+  if (mode === "edit") {
+    defualt_value = { ...exercise };
+  }
+
+  const {
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({ defaultValues: defualt_value });
+  const onSubmit = (data: any) => console.log(data);
+
+  console.log(watch("name")); // watch input value by passing the name of it
+
+  return (
+    <EuiForm onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        render={({ field }) => (
+          <EuiFormRow label="Name" error={errors.name?.message}>
+            <EuiFieldText {...field} />
+          </EuiFormRow>
+        )}
+        control={control}
+        name="name"
+      />
+      <EuiButton>{mode == "create" ? "Create" : "Edit"}</EuiButton>
+    </EuiForm>
+  );
+};
+
+export interface Exercise_loader_data extends Workout_loader_data {
+  exercise_id: string;
+}
+export const exercise_loader = ({ params }: LoaderFunctionArgs): Exercise_loader_data => {
+  const { workout_id, exercise_id } = params;
+  return { workout_id, exercise_id } as Exercise_loader_data;
 };
 export default Exercise_item;

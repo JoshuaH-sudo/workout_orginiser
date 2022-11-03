@@ -3,10 +3,13 @@ import { FC } from "react";
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
 import { v4 } from "uuid";
 import useWorkouts from "../../hooks/useWorkouts";
-import {Workout, Exercise} from "../store/slices/databaseSlice";
+import { Workout, Exercise } from "../store/slices/databaseSlice";
 
 const Workout_item: FC = () => {
-  const current_workout = useLoaderData() as Workout;
+  const { workout_id } = useLoaderData() as Workout_loader_data;
+  const { workout_store_handler } = useWorkouts();
+  const current_workout = workout_store_handler.get_workout(workout_id);
+
   return (
     <>
       <EuiPageSection color="subdued" bottomBorder={true}>
@@ -38,12 +41,14 @@ const Exercise_list: FC<Exercise_list_props> = ({ workout_id, exercises }) => {
   );
 };
 
-//gets the workout id form params
-export const workout_loader = ({ params }: LoaderFunctionArgs): Workout => {
-  const { workout_store_handler } = useWorkouts();
-
-  const workout_id = params.workout_id as string;
-  return workout_store_handler.get_workout(workout_id);
+export interface Workout_loader_data {
+  workout_id: string;
+}
+/**
+ *gets the workout id form params
+ */
+export const workout_loader = ({ params }: LoaderFunctionArgs): Workout_loader_data => {
+  return { workout_id: params.workout_id as string };
 };
 
 export default Workout_item;

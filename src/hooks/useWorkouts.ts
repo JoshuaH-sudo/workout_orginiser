@@ -1,3 +1,4 @@
+import {v4} from "uuid";
 import { useAppSelector, useAppDispatch } from "../component/store/hooks";
 import { set_data_in_store, Workout } from "../component/store/slices/databaseSlice";
 
@@ -14,7 +15,7 @@ const useWorkouts = () => {
     }
 
     create_workout(name: string) {
-      this.workouts.push(new Workout(name));
+      this.workouts.push(new Workout(v4(), name));
       dispatch(set_data_in_store({ workouts: this.workouts }));
     }
 
