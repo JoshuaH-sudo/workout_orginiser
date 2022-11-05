@@ -77,7 +77,7 @@ const initial_database_state: Database_state = get_store_data();
 
 type Set_data_action = Partial<Database_state>;
 
-export const databaseSlice = createSlice({
+export const database_slice = createSlice({
   name: "database",
   initialState: initial_database_state,
   reducers: {
@@ -89,6 +89,6 @@ export const databaseSlice = createSlice({
   },
 });
 
-export const { get_data, set_data_in_store } = databaseSlice.actions;
+export const { get_data, set_data_in_store } = database_slice.actions;
 
-export default databaseSlice.reducer;
+export default database_slice.reducer;

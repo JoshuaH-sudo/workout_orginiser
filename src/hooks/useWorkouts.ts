@@ -1,6 +1,6 @@
 import {v4} from "uuid";
 import { useAppSelector, useAppDispatch } from "../component/store/hooks";
-import { set_data_in_store, Workout } from "../component/store/slices/databaseSlice";
+import { set_data_in_store, Workout } from "../component/store/slices/database_slice";
 
 const useWorkouts = () => {
   const stored_workouts = useAppSelector((state) => state.database.workouts);

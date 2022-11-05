@@ -1,14 +1,15 @@
 import { EuiFlexItem, EuiCard, EuiIcon, EuiFlexGroup } from "@elastic/eui";
 import { FC } from "react";
 import { v4 } from "uuid";
+import useRouter from "../../hooks/useRouter";
 import useWorkouts from "../../hooks/useWorkouts";
-import {Workout} from "../store/slices/databaseSlice";
+import { Workout } from "../store/slices/database_slice";
 
 const Workout_list: FC = () => {
   const { stored_workouts } = useWorkouts();
   const workout_display_list = stored_workouts.map((workout) => (
     <EuiFlexItem key={workout.id}>
-      <Workout_item workout={workout} />
+      <Workout_item_card workout={workout} />
     </EuiFlexItem>
   ));
 
@@ -24,8 +25,9 @@ const Add_workout: FC = () => {
 interface Workout_item_props {
   workout: Workout;
 }
-const Workout_item: FC<Workout_item_props> = ({ workout }) => {
-  return <EuiCard title={`${workout.name}`} description="Example of a card's description. Stick to one or two sentences." href={`workout/${workout.id}`} />;
+const Workout_item_card: FC<Workout_item_props> = ({ workout }) => {
+  const { go_to_page } = useRouter();
+  return <EuiCard title={`${workout.name}`} description="Example of a card" onClick={() => go_to_page("workout_item", { workout_id: workout.id })} />;
 };
 
 export default Workout_list;

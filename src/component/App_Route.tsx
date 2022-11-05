@@ -1,26 +1,22 @@
 import { FC } from "react";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
-import Exercise_item, { exercise_loader } from "./pages/Exercise_item";
-import Workout_item, { workout_loader } from "./pages/Workout_item";
+//import { createBrowserRouter, RouterProvider, Route, Routes } from "react-router-dom";
+import useRouter from "../hooks/useRouter";
+import Exercise_item from "./pages/Exercise_item";
+import Workout_item from "./pages/Workout_item";
 import Workout_list from "./pages/Workout_list";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Workout_list />,
-  },
-  {
-    path: "workout/:workout_id",
-    element: <Workout_item />,
-    loader: workout_loader,
-  },
-  {
-    path: "workout/:workout_id/exercise/:exercise_id",
-    element: <Exercise_item />,
-    loader: exercise_loader,
-  },
-]);
-
-const App_route: FC = () => <RouterProvider router={router} />;
+const App_route: FC = () => {
+  const { router } = useRouter();
+  switch (router.current_page) {
+    case "workout_list":
+      return <Workout_list {...router.current_page_props} />;
+    case "workout_item":
+      return <Workout_item {...router.current_page_props} />;
+    case "exercise_item":
+      return <Exercise_item {...router.current_page_props} />;
+    default:
+      return <>{`Route: ${router.current_page} not defined`}</>;
+  }
+};
 
 export default App_route;

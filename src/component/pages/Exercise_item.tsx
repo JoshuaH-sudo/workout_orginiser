@@ -1,22 +1,22 @@
 import { EuiFormRow, EuiFieldText, EuiForm, EuiButton, EuiText } from "@elastic/eui";
 import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import useWorkouts from "../../hooks/useWorkouts";
-import { Exercise, Workout } from "../store/slices/databaseSlice";
-import { Workout_loader_data } from "./Workout_item";
+import { Exercise, Workout } from "../store/slices/database_slice";
 
-interface Exercise_item_props {}
+export interface Exercise_item_props {
+  workout_id: string;
+  exercise_id?: string;
+}
 
 /**
  *Displays the exercise item's value to edit or create new ones
  */
-const Exercise_item: FC<Exercise_item_props> = ({}) => {
-  const { workout_id, exercise_id } = useLoaderData() as Exercise_loader_data;
+const Exercise_item: FC<Exercise_item_props> = ({ workout_id, exercise_id }) => {
   const { workout_store_handler } = useWorkouts();
 
   const workout = workout_store_handler.get_workout(workout_id);
-  const exercise = workout.get_exercise(exercise_id);
+  const exercise = exercise_id ? workout.get_exercise(exercise_id) : undefined
 
   const [edit_mode, set_edit_mode] = useState(false);
   const complete_form = () => set_edit_mode(false);
@@ -87,11 +87,4 @@ const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
   );
 };
 
-export interface Exercise_loader_data extends Workout_loader_data {
-  exercise_id: string;
-}
-export const exercise_loader = ({ params }: LoaderFunctionArgs): Exercise_loader_data => {
-  const { workout_id, exercise_id } = params;
-  return { workout_id, exercise_id } as Exercise_loader_data;
-};
 export default Exercise_item;

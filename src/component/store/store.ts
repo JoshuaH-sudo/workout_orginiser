@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import databaseSlice from "./slices/databaseSlice";
+import database_slice from "./slices/database_slice";
+import router_slice from "./slices/router_slice";
 
 const store = configureStore({
   reducer: {
-    database: databaseSlice,
+    database: database_slice,
+    router: router_slice
   },
 });
 
