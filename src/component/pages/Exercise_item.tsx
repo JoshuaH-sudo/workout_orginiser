@@ -56,7 +56,7 @@ type Exercise_form_props =
 
 /**
  * Display the create/edit form for exercise
- * @param exercise - if this is not undefined than the form will be in edit mode
+ * @param exercise - if this is defined than the form will be in edit mode
  */
 const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
   let defualt_value = exercise;
@@ -82,7 +82,7 @@ const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
         control={control}
         name="name"
       />
-      <EuiButton>{exercise != undefined ? "Edit" : "Create"}</EuiButton>
+      <EuiButton>{exercise != undefined ? "Confirm" : "Create"}</EuiButton>
     </EuiForm>
   );
 };

@@ -1,44 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 
-export class Exercise {
+export interface Exercise {
   id: string;
   name: string;
-
-  constructor(id: string, name: string) {
-    this.id = id;
-    this.name = name;
-  }
-
-  public get_info() {
-    return {
-      id: this.id,
-      name: this.name,
-    };
-  }
-  public edit(name: string) {
-    this.name = name;
-  }
 }
 
-export class Workout {
+export interface Workout {
   id: string;
   name: string;
   exercises: Exercise[];
-
-  constructor(id: string, name: string, exercises: Exercise[] = []) {
-    this.id = id;
-    this.name = name;
-    this.exercises = exercises;
-  }
-
-  public add_exercise(new_execerise: Exercise) {
-    this.exercises.push(new_execerise);
-  }
-
-  public get_exercise(exercise_id: string) {
-    return this.exercises.find((exercise) => exercise.id == exercise_id);
-  }
 }
 
 interface Database_state {
@@ -59,8 +30,10 @@ const get_store_data = (): Database_state => {
     retrived_database = {
       user_data: "yeet",
       workouts: [
-        new Workout("0", "Gym", [new Exercise("0", "pushups"), new Exercise("1", "chest fly")]), 
-        new Workout("1", "Home", [new Exercise("0", "sit ups")])],
+        { id: "0", name: "Gym", exercises: [{ id: "0", name: "pushups" }]}
+        //new Workout("0", "Gym", [new Exercise("0", "pushups"), new Exercise("1", "chest fly")]), 
+        //new Workout("1", "Home", [new Exercise("0", "sit ups")])
+      ],
     };
 
     //save the new test database

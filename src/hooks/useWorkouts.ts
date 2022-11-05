@@ -1,6 +1,6 @@
-import {v4} from "uuid";
+import { v4 } from "uuid";
 import { useAppSelector, useAppDispatch } from "../component/store/hooks";
-import { set_data_in_store, Workout } from "../component/store/slices/database_slice";
+import { Exercise, set_data_in_store, Workout } from "../component/store/slices/database_slice";
 
 const useWorkouts = () => {
   const stored_workouts = useAppSelector((state) => state.database.workouts);
@@ -15,7 +15,7 @@ const useWorkouts = () => {
     }
 
     create_workout(name: string) {
-      this.workouts.push(new Workout(v4(), name));
+      this.workouts.push({ id: v4(), name, exercises: [] });
       dispatch(set_data_in_store({ workouts: this.workouts }));
     }
 
@@ -31,9 +31,49 @@ const useWorkouts = () => {
     }
   }
 
+  class Exercise_handler {
+    id: string;
+    name: string;
+
+    constructor(id: string, name: string) {
+      this.id = id;
+      this.name = name;
+    }
+
+    public get_info() {
+      return {
+        id: this.id,
+        name: this.name,
+      };
+    }
+    public edit(name: string) {
+      this.name = name;
+    }
+  }
+
+  class Workout_handler {
+    id: string;
+    name: string;
+    exercises: Exercise[];
+
+    constructor(id: string, name: string, exercises: Exercise[] = []) {
+      this.id = id;
+      this.name = name;
+      this.exercises = exercises;
+    }
+
+    public add_exercise(new_execerise: Exercise) {
+      this.exercises.push(new_execerise);
+    }
+
+    public get_exercise(exercise_id: string) {
+      return this.exercises.find((exercise) => exercise.id == exercise_id);
+    }
+  }
+
   const workout_store_handler = new Workout_store_handler(stored_workouts);
 
-  return { workout_store_handler, stored_workouts };
+  return { workout_store_handler, stored_workouts, Exercise_handler, Workout_handler };
 };
 
 export default useWorkouts;
