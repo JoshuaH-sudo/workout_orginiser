@@ -11,7 +11,7 @@ export interface Workout_item_props {
 
 const Workout_item: FC<Workout_item_props> = ({ workout_id }) => {
   const { workout_store_handler } = useWorkouts();
-  const current_workout = workout_store_handler.get_workout(workout_id);
+  const current_workout = workout_store_handler.get_workout_data(workout_id);
 
   return (
     <>

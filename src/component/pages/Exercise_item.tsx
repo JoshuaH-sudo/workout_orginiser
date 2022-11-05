@@ -15,8 +15,8 @@ export interface Exercise_item_props {
 const Exercise_item: FC<Exercise_item_props> = ({ workout_id, exercise_id }) => {
   const { workout_store_handler } = useWorkouts();
 
-  const workout = workout_store_handler.get_workout(workout_id);
-  const exercise = exercise_id ? workout.get_exercise(exercise_id) : undefined
+  const workout = workout_store_handler.get_workout_handler(workout_id);
+  const exercise = exercise_id ? workout.get_exercise(exercise_id) : undefined;
 
   const [edit_mode, set_edit_mode] = useState(false);
   const complete_form = () => set_edit_mode(false);
@@ -58,8 +58,9 @@ type Exercise_form_props =
  * Display the create/edit form for exercise
  * @param exercise - if this is defined than the form will be in edit mode
  */
-const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
+const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise, complete_form }) => {
   let defualt_value = exercise;
+  const { Exercise_handler } = useWorkouts();
 
   const {
     handleSubmit,
@@ -68,7 +69,9 @@ const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
   } = useForm({ defaultValues: defualt_value });
 
   const onSubmit = (data: Exercise): void => {
-    exercise!.edit(data.name);
+    const exercise_handler = new Exercise_handler(data);
+    exercise_handler.edit(data);
+    complete_form!();
   };
 
   return (
@@ -82,7 +85,7 @@ const Exercise_form: FC<Exercise_form_props> = ({ workout, exercise }) => {
         control={control}
         name="name"
       />
-      <EuiButton>{exercise != undefined ? "Confirm" : "Create"}</EuiButton>
+      <EuiButton type="submit">{exercise != undefined ? "Confirm" : "Create"}</EuiButton>
     </EuiForm>
   );
 };

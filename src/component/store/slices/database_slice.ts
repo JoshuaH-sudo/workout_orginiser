@@ -1,9 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { v4 } from "uuid";
 
+/**
+ *  The exercise data structure
+ * @param workout_id - this acts a relational key to the workout this exercise belongs to
+ */
 export interface Exercise {
   id: string;
   name: string;
+  workout_id: string;
 }
 
 export interface Workout {
@@ -30,9 +34,7 @@ const get_store_data = (): Database_state => {
     retrived_database = {
       user_data: "yeet",
       workouts: [
-        { id: "0", name: "Gym", exercises: [{ id: "0", name: "pushups" }]}
-        //new Workout("0", "Gym", [new Exercise("0", "pushups"), new Exercise("1", "chest fly")]), 
-        //new Workout("1", "Home", [new Exercise("0", "sit ups")])
+        { id: "0", name: "Gym", exercises: [{ id: "0", name: "pushups", workout_id: "0" }] },
       ],
     };
 
@@ -57,8 +59,7 @@ export const database_slice = createSlice({
     set_data_in_store: (state, action: PayloadAction<Set_data_action>) => {
       state = { ...state, ...action.payload };
     },
-    get_data: (state, action: PayloadAction<Workout>) => {
-    },
+    get_data: (state, action: PayloadAction<Workout>) => {},
   },
 });
 
